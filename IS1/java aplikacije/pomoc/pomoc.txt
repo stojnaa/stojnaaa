@@ -1,0 +1,72 @@
+Za ps1, ps2, ps3 persistence.xml:
+<property name="javax.persistence.jdbc.user" value="admin"/>
+<property name="javax.persistence.jdbc.password" value="123"/>
+takodje persistence unit name mora da bude ps1PU, persistence library EclipseLink (JPA 2.1)
+
+izgled persistence.xml:<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="ps1PU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>entities.City</class>
+    <class>entities.Role</class>
+    <class>entities.Usr</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ps1?useSSL=false&amp;serverTimezone=UTC&amp;zeroDateTimeBehavior=CONVERT_TO_NULL"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="Drazana150581"/>
+        <property name="eclipselink.jdbc.property.useSSL" value="false"/>
+  <property name="eclipselink.jdbc.property.requireSSL" value="false"/>
+    </properties>
+  </persistence-unit>
+</persistence>
+
+
+
+
+Sva tri ps-a moraju da imaju libraries:
+Java EE 8 API Library
+EclipseLink (JPA 2.1)
+i moj connector
+java platform je JDK 1.8
+source/binary format: JDK 8
+u polju run isto glassfish server i java ee version java ee 8
+compaling deo generate debugging ifo enable annotation processing i enable annotation processing in editor
+
+
+ako bude problema sa iiop moze:
+String provider = System.getProperty("GF_IIOP", "iiop://localhost:3700");
+Properties p = new Properties();
+p.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.enterprise.naming.impl.SerialInitContextFactory");
+p.put(Context.PROVIDER_URL, provider);
+
+Context ictx = new InitialContext(p);
+ali mogu i da proverim broj iiop na → Configurations → server-config → ORB
+tu vidiš IIOP port
+
+
+CENTRAL SERVER:
+u polju sources: source/binary format: 1.8
+u polju build pa compile java platform JDK 1.8 cekirano compile on save i cekirano generate debugging info
+u polju run: server glassfish server i java ee version java ee web contextpath: /centralServer
+
+
+Redosled pokretanja:
+
+start GlassFish
+
+run centralServer
+
+run ps1, ps2, ps3 (listeneri)
+
+(opciono) run emptyQueue
+
+run ApplicationClient
+
+lista svih JMS JNDI imena koje koristiš:
+
+jms/podsistem1Queue, jms/podsistem2Queue, jms/podsistem3Queue
+
+jms/centralReplyPS1, jms/centralReplyPS2, jms/centralReplyPS3
+
+jms/__defaultConnectionFactory

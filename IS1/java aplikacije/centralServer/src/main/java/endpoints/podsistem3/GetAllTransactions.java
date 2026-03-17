@@ -1,0 +1,41 @@
+package endpoints.podsistem3;
+
+import centralserver.config.MessageExchanger;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Resource;
+import javax.jms.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
+
+@Path("ps3/transactions")
+public class GetAllTransactions {
+
+    @Resource(lookup = "jms/__defaultConnectionFactory")
+    private ConnectionFactory connectionFactory;
+
+    @Resource(lookup = "jms/podsistem3Queue")
+    private Queue podsistem3Queue;
+
+    @Resource(lookup = "jms/centralReplyPS3")
+    private Queue centralReplyPS3;
+
+    @GET
+    public Response get() {
+        try (JMSContext context = connectionFactory.createContext()) {
+
+            ObjectMessage objMsg = context.createObjectMessage(new HashMap<String, String>());
+            objMsg.setIntProperty("redniBrojZahteva", 23);
+
+            String odgovor = MessageExchanger.razmeniPoruke(context, podsistem3Queue, objMsg, centralReplyPS3);
+            return Response.ok(odgovor).build();
+
+        } catch (Exception ex) {
+            Logger.getLogger(GetAllTransactions.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("GRESKA u GetAllTransactions.get()").build();
+        }
+    }
+}

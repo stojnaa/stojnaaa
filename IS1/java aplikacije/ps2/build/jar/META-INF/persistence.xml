@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="ps2PU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>entities.Item</class>
+    <class>entities.Category</class>
+    <class>entities.Cart</class>
+    <class>entities.Wishlist</class>
+    <class>entities.UserPs2</class>
+    <class>entities.WishlistItem</class>
+    <class>entities.CartItem</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ps2?useSSL=false&amp;serverTimezone=UTC&amp;zeroDateTimeBehavior=CONVERT_TO_NULL"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="Drazana150581"/>
+       <property name="eclipselink.jdbc.property.useSSL" value="false"/>
+  <property name="eclipselink.jdbc.property.requireSSL" value="false"/>
+    </properties>
+  </persistence-unit>
+</persistence>
